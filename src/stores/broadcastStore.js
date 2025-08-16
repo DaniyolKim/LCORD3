@@ -90,23 +90,30 @@ const useBroadcastStore = create((set, get) => ({
     const updatedResults = [...state.matchResults]
     const existingResultIndex = updatedResults.findIndex(r => r.round === roundIndex + 1)
     
-    if (existingResultIndex !== -1) {
-      // 기존 결과 수정
-      updatedResults[existingResultIndex] = {
-        ...updatedResults[existingResultIndex],
-        winner: newWinner
+    if (newWinner === null) {
+      // 승리자 해제 - 해당 결과 제거
+      if (existingResultIndex !== -1) {
+        updatedResults.splice(existingResultIndex, 1)
       }
     } else {
-      // 새로운 결과 추가
-      const newResult = {
-        round: roundIndex + 1,
-        homePlayer: state.homeTeam.players[roundIndex],
-        awayPlayer: state.awayTeam.players[roundIndex],
-        winner: newWinner,
-        homeScore: 0, // 나중에 재계산됨
-        awayScore: 0  // 나중에 재계산됨
+      if (existingResultIndex !== -1) {
+        // 기존 결과 수정
+        updatedResults[existingResultIndex] = {
+          ...updatedResults[existingResultIndex],
+          winner: newWinner
+        }
+      } else {
+        // 새로운 결과 추가
+        const newResult = {
+          round: roundIndex + 1,
+          homePlayer: state.homeTeam.players[roundIndex],
+          awayPlayer: state.awayTeam.players[roundIndex],
+          winner: newWinner,
+          homeScore: 0, // 나중에 재계산됨
+          awayScore: 0  // 나중에 재계산됨
+        }
+        updatedResults.push(newResult)
       }
-      updatedResults.push(newResult)
     }
     
     // 스코어 재계산
@@ -117,9 +124,10 @@ const useBroadcastStore = create((set, get) => ({
       if (result.winner === 'away') newAwayScore++
     })
     
-    // 현재 플레이어 인덱스 계산 (완료된 경기 수)
-    const completedMatches = updatedResults.length
-    const nextPlayerIndex = completedMatches % state.homeTeam.players.length
+    // 현재 플레이어 인덱스 계산 (가장 높은 완료된 라운드 + 1)
+    const completedRounds = updatedResults.length > 0 ? 
+      Math.max(...updatedResults.map(r => r.round)) : 0
+    const nextPlayerIndex = completedRounds % state.homeTeam.players.length
     
     return {
       ...state,
@@ -133,7 +141,7 @@ const useBroadcastStore = create((set, get) => ({
         score: newAwayScore,
         currentPlayerIndex: nextPlayerIndex
       },
-      currentRound: completedMatches + 1,
+      currentRound: completedRounds + 1,
       matchResults: updatedResults
     }
   }),

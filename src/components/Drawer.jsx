@@ -276,6 +276,8 @@ function Drawer() {
                               onChange={(e) => {
                                 if (e.target.checked) {
                                   updateRoundWinner(index, 'home')
+                                } else {
+                                  updateRoundWinner(index, null)
                                 }
                               }}
                             />
@@ -290,6 +292,8 @@ function Drawer() {
                               onChange={(e) => {
                                 if (e.target.checked) {
                                   updateRoundWinner(index, 'away')
+                                } else {
+                                  updateRoundWinner(index, null)
                                 }
                               }}
                             />
