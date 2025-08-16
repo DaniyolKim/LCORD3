@@ -49,34 +49,143 @@ function BroadcastPage() {
         <source src="/versus.mp4" type="video/mp4" />
       </video>
 
+      {/* 팀 정보 - 상단 가운데 */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: 20,
+          left: "50%",
+          transform: "translateX(-50%)",
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          zIndex: 3,
+          background: "rgba(0, 0, 0, 0.7)",
+          borderRadius: 2,
+          width: 1250,
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: 400,
+          }}
+        >
+          {/* 홈팀 로고 */}
+          <Box
+            component="img"
+            src={`/team_logo/${homeTeam.name.split(" ")[0]}.jpg`}
+            alt={`${homeTeam.name} 로고`}
+            sx={{
+              width: 80,
+              height: 80,
+              borderRadius: 2,
+              objectFit: "cover",
+              ml: 2,
+            }}
+          />
+
+          {/* 홈팀 이름 */}
+          <Typography
+            variant="h3"
+            sx={{
+              fontWeight: "bold",
+              color: "#E8F4FD",
+              textAlign: "center",
+              textShadow: "2px 2px 8px rgba(0,0,0,0.7)",
+              background: "linear-gradient(135deg, #ff6b9d 0%, #ff8a50 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              filter: "drop-shadow(2px 2px 4px rgba(0,0,0,0.5))",
+            }}
+          >
+            {homeTeam.name}
+          </Typography>
+        </Box>
+
+        {/* 점수 */}
+        <Box
+          sx={{
+            background: "linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
+            borderRadius: 3,
+            padding: "16px 32px",
+            border: "3px solid #17292eff",
+            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3), inset 0 2px 0 rgba(255,255,255,0.1)",
+          }}
+        >
+          <Typography
+            variant="h1"
+            sx={{
+              fontWeight: "bold",
+              color: "#ecf0f1",
+              textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
+              fontSize: "4rem",
+            }}
+          >
+            {homeTeam.score} : {awayTeam.score}
+          </Typography>
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: 400,
+          }}
+        >
+          {/* 어웨이팀 이름 */}
+          <Typography
+            variant="h3"
+            sx={{
+              fontWeight: "bold",
+              color: "#E8F4FD",
+              textAlign: "center",
+              textShadow: "2px 2px 8px rgba(0,0,0,0.7)",
+              background: "linear-gradient(135deg, #74b9ff 0%, #0984e3 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              filter: "drop-shadow(2px 2px 4px rgba(0,0,0,0.5))",
+            }}
+          >
+            {awayTeam.name}
+          </Typography>
+
+          {/* 어웨이팀 로고 */}
+          <Box
+            component="img"
+            src={`/team_logo/${awayTeam.name.split(" ")[0]}.jpg`}
+            alt={`${awayTeam.name} 로고`}
+            sx={{
+              width: 80,
+              height: 80,
+              borderRadius: 2,
+              objectFit: "cover",
+              mr: 2,
+            }}
+          />
+        </Box>
+      </Box>
       {/* 오버레이 컨텐츠 */}
       <Box
         sx={{
           display: "flex",
           flexDirection: "row",
           textAlign: "center",
-          color: "white",
           zIndex: 2,
           padding: 4,
-          borderRadius: 2,
-          gap: 30
+          gap: 30,
+          marginTop: 18,
         }}
       >
         <PlayerBox playerName={homePlayer || "홈 플레이어"} />
-        <Box sx={{ 
-          display: 'flex', 
-          flexDirection: 'column', 
-          alignItems: 'center', 
-          justifyContent: 'center',
-          minWidth: 100
-        }}>
-          <Typography variant="h3" sx={{ fontWeight: 'bold', mb: 1 }}>
-            {homeTeam.score} : {awayTeam.score}
-          </Typography>
-          <Typography variant="h6" sx={{ opacity: 0.8 }}>
-            Round {homeTeam.currentPlayerIndex + 1}
-          </Typography>
-        </Box>
         <PlayerBox playerName={awayPlayer || "어웨이 플레이어"} />
       </Box>
     </Box>
