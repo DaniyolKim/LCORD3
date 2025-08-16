@@ -20,67 +20,7 @@ import {
 import { Close as CloseIcon } from '@mui/icons-material';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { getPlayerByName } from '../stores/playersStore';
-
-// 종족 아이콘 컴포넌트
-const RaceIcon = ({ race }) => {
-  const getRaceStyle = (race) => {
-    switch (race) {
-      case 'P': 
-        return { 
-          backgroundColor: '#FFD700', 
-          color: 'white', 
-          symbol: 'P' 
-        };
-      case 'T': 
-        return { 
-          backgroundColor: '#87CEEB', 
-          color: 'white', 
-          symbol: 'T' 
-        };
-      case 'Z': 
-        return { 
-          backgroundColor: '#9370DB', 
-          color: 'white', 
-          symbol: 'Z' 
-        };
-      case 'R': 
-        return { 
-          backgroundColor: '#FFA500', 
-          color: 'white', 
-          symbol: 'R' 
-        };
-      default: 
-        return { 
-          backgroundColor: '#CCCCCC', 
-          color: 'black', 
-          symbol: '?' 
-        };
-    }
-  };
-
-  const style = getRaceStyle(race);
-  
-  return (
-    <Box
-      sx={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: 20,
-        height: 20,
-        borderRadius: '50%',
-        backgroundColor: style.backgroundColor,
-        color: style.color,
-        fontSize: '12px',
-        fontWeight: 'bold',
-        marginRight: 0.5,
-        minWidth: 20
-      }}
-    >
-      {style.symbol}
-    </Box>
-  );
-};
+import RaceIcon from './RaceIcon';
 
 const PlayerDetailCard = ({ player, data, open, onClose }) => {
   // 선수의 모든 경기 데이터 추출
@@ -419,7 +359,7 @@ const PlayerDetailCard = ({ player, data, open, onClose }) => {
                           <TableCell>
                             {match.type === '개인전' ? (
                               <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                                <RaceIcon race={player.race}>{player.race}</RaceIcon>
+                                <RaceIcon race={player.race} size={20} />
                                 <Typography variant="body2" component="span">
                                   {player.name}
                                 </Typography>
@@ -435,7 +375,7 @@ const PlayerDetailCard = ({ player, data, open, onClose }) => {
                               }}>
                                 {/* 현재 선수 (굵게 표시) */}
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexShrink: 0 }}>
-                                  <RaceIcon race={player.race}>{player.race}</RaceIcon>
+                                  <RaceIcon race={player.race} size={20} />
                                   <Typography variant="body2" component="span" fontWeight="bold">
                                     {player.name}
                                   </Typography>
@@ -446,7 +386,7 @@ const PlayerDetailCard = ({ player, data, open, onClose }) => {
                                     <Typography variant="body2" color="text.secondary" component="span">
                                       ,
                                     </Typography>
-                                    <RaceIcon race={teammate.race}>{teammate.race}</RaceIcon>
+                                    <RaceIcon race={teammate.race} size={20} />
                                     <Typography variant="body2" component="span">
                                       {teammate.name}
                                     </Typography>
@@ -466,7 +406,7 @@ const PlayerDetailCard = ({ player, data, open, onClose }) => {
                             }}>
                               {match.opponents.map((opponent, idx) => (
                                 <Box key={idx} sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexShrink: 0 }}>
-                                  <RaceIcon race={opponent.race}>{opponent.race}</RaceIcon>
+                                  <RaceIcon race={opponent.race} size={20} />
                                   <Typography variant="body2" component="span">
                                     {opponent.name}
                                   </Typography>

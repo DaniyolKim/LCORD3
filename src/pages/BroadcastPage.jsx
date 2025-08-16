@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { useRef, useEffect } from "react";
+import PlayerBox from "../components/PlayerBox";
 
 function BroadcastPage() {
   const videoRef = useRef(null);
@@ -55,38 +56,11 @@ function BroadcastPage() {
           zIndex: 2,
           padding: 4,
           borderRadius: 2,
+          gap: 30
         }}
       >
-        <Box
-          sx={{
-            textAlign: "center",
-            color: "white",
-            position: "relative",
-            zIndex: 2,
-            backgroundColor: "rgba(0, 0, 0, 0.6)",
-            padding: 4,
-            borderRadius: 2,
-            backdropFilter: "blur(10px)",
-            border: "1px solid rgba(255, 255, 255, 0.2)",
-          }}
-        >
-          1
-        </Box>
-        <Box
-          sx={{
-            textAlign: "center",
-            color: "white",
-            position: "relative",
-            zIndex: 2,
-            backgroundColor: "rgba(0, 0, 0, 0.6)",
-            padding: 4,
-            borderRadius: 2,
-            backdropFilter: "blur(10px)",
-            border: "1px solid rgba(255, 255, 255, 0.2)",
-          }}
-        >
-          2
-        </Box>
+        <PlayerBox playerName="강응선" />
+        <PlayerBox playerName="김연섭" />
       </Box>
     </Box>
   );
