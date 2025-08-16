@@ -1,9 +1,12 @@
 import { Box, Typography } from "@mui/material";
 import { useRef, useEffect } from "react";
 import PlayerBox from "../components/PlayerBox";
+import useBroadcastStore from "../stores/broadcastStore";
 
 function BroadcastPage() {
   const videoRef = useRef(null);
+  const { homeTeam, awayTeam, getCurrentPlayers } = useBroadcastStore();
+  const { homePlayer, awayPlayer } = getCurrentPlayers();
 
   useEffect(() => {
     const video = videoRef.current;
@@ -59,8 +62,22 @@ function BroadcastPage() {
           gap: 30
         }}
       >
-        <PlayerBox playerName="강응선" />
-        <PlayerBox playerName="김연섭" />
+        <PlayerBox playerName={homePlayer || "홈 플레이어"} />
+        <Box sx={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          justifyContent: 'center',
+          minWidth: 100
+        }}>
+          <Typography variant="h3" sx={{ fontWeight: 'bold', mb: 1 }}>
+            {homeTeam.score} : {awayTeam.score}
+          </Typography>
+          <Typography variant="h6" sx={{ opacity: 0.8 }}>
+            Round {homeTeam.currentPlayerIndex + 1}
+          </Typography>
+        </Box>
+        <PlayerBox playerName={awayPlayer || "어웨이 플레이어"} />
       </Box>
     </Box>
   );

@@ -1,0 +1,169 @@
+import { create } from 'zustand'
+
+const useBroadcastStore = create((set, get) => ({
+  // 홈팀 정보
+  homeTeam: {
+    name: '',
+    players: ['', '', '', '', '', '', ''],
+    score: 0,
+    currentPlayerIndex: 0
+  },
+  
+  // 어웨이팀 정보
+  awayTeam: {
+    name: '',
+    players: ['', '', '', '', '', '', ''],
+    score: 0,
+    currentPlayerIndex: 0
+  },
+  
+  // 현재 경기 상태
+  currentRound: 1,
+  matchResults: [], // 각 경기 결과를 저장
+  
+  // 홈팀 정보 업데이트
+  setHomeTeam: (teamData) => set((state) => ({
+    homeTeam: { ...state.homeTeam, ...teamData }
+  })),
+  
+  // 어웨이팀 정보 업데이트
+  setAwayTeam: (teamData) => set((state) => ({
+    awayTeam: { ...state.awayTeam, ...teamData }
+  })),
+  
+  // 홈팀 플레이어 업데이트
+  setHomePlayer: (index, playerName) => set((state) => {
+    const newPlayers = [...state.homeTeam.players]
+    newPlayers[index] = playerName
+    return {
+      homeTeam: { ...state.homeTeam, players: newPlayers }
+    }
+  }),
+  
+  // 어웨이팀 플레이어 업데이트
+  setAwayPlayer: (index, playerName) => set((state) => {
+    const newPlayers = [...state.awayTeam.players]
+    newPlayers[index] = playerName
+    return {
+      awayTeam: { ...state.awayTeam, players: newPlayers }
+    }
+  }),
+  
+  // 승리팀 결정 및 다음 라운드로 진행
+  setWinner: (winner) => set((state) => {
+    const { homeTeam, awayTeam } = state
+    const newHomeScore = winner === 'home' ? homeTeam.score + 1 : homeTeam.score
+    const newAwayScore = winner === 'away' ? awayTeam.score + 1 : awayTeam.score
+    
+    // 다음 플레이어로 이동
+    const nextHomePlayerIndex = (homeTeam.currentPlayerIndex + 1) % homeTeam.players.length
+    const nextAwayPlayerIndex = (awayTeam.currentPlayerIndex + 1) % awayTeam.players.length
+    
+    return {
+      homeTeam: {
+        ...homeTeam,
+        score: newHomeScore,
+        currentPlayerIndex: nextHomePlayerIndex
+      },
+      awayTeam: {
+        ...awayTeam,
+        score: newAwayScore,
+        currentPlayerIndex: nextAwayPlayerIndex
+      },
+      currentRound: state.currentRound + 1,
+      matchResults: [
+        ...state.matchResults,
+        {
+          round: state.currentRound,
+          homePlayer: homeTeam.players[homeTeam.currentPlayerIndex],
+          awayPlayer: awayTeam.players[awayTeam.currentPlayerIndex],
+          winner,
+          homeScore: newHomeScore,
+          awayScore: newAwayScore
+        }
+      ]
+    }
+  }),
+
+  // 특정 라운드의 승리 결과 수정
+  updateRoundWinner: (roundIndex, newWinner) => set((state) => {
+    const updatedResults = [...state.matchResults]
+    const existingResultIndex = updatedResults.findIndex(r => r.round === roundIndex + 1)
+    
+    if (existingResultIndex !== -1) {
+      // 기존 결과 수정
+      updatedResults[existingResultIndex] = {
+        ...updatedResults[existingResultIndex],
+        winner: newWinner
+      }
+    } else {
+      // 새로운 결과 추가
+      const newResult = {
+        round: roundIndex + 1,
+        homePlayer: state.homeTeam.players[roundIndex],
+        awayPlayer: state.awayTeam.players[roundIndex],
+        winner: newWinner,
+        homeScore: 0, // 나중에 재계산됨
+        awayScore: 0  // 나중에 재계산됨
+      }
+      updatedResults.push(newResult)
+    }
+    
+    // 스코어 재계산
+    let newHomeScore = 0
+    let newAwayScore = 0
+    updatedResults.forEach(result => {
+      if (result.winner === 'home') newHomeScore++
+      if (result.winner === 'away') newAwayScore++
+    })
+    
+    // 현재 플레이어 인덱스 계산 (완료된 경기 수)
+    const completedMatches = updatedResults.length
+    const nextPlayerIndex = completedMatches % state.homeTeam.players.length
+    
+    return {
+      ...state,
+      homeTeam: { 
+        ...state.homeTeam, 
+        score: newHomeScore,
+        currentPlayerIndex: nextPlayerIndex
+      },
+      awayTeam: { 
+        ...state.awayTeam, 
+        score: newAwayScore,
+        currentPlayerIndex: nextPlayerIndex
+      },
+      currentRound: completedMatches + 1,
+      matchResults: updatedResults
+    }
+  }),
+  
+  // 게임 리셋
+  resetGame: () => set({
+    homeTeam: {
+      name: '',
+      players: ['', '', '', '', '', '', ''],
+      score: 0,
+      currentPlayerIndex: 0
+    },
+    awayTeam: {
+      name: '',
+      players: ['', '', '', '', '', '', ''],
+      score: 0,
+      currentPlayerIndex: 0
+    },
+    currentRound: 1,
+    matchResults: []
+  }),
+  
+  // 현재 플레이어 정보 가져오기
+  getCurrentPlayers: () => {
+    const state = get()
+    return {
+      homePlayer: state.homeTeam.players[state.homeTeam.currentPlayerIndex] || '',
+      awayPlayer: state.awayTeam.players[state.awayTeam.currentPlayerIndex] || ''
+    }
+  }
+}))
+
+export default useBroadcastStore
