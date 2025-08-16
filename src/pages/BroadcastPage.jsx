@@ -115,7 +115,8 @@ function BroadcastPage() {
             borderRadius: 3,
             padding: "16px 32px",
             border: "3px solid #17292eff",
-            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3), inset 0 2px 0 rgba(255,255,255,0.1)",
+            boxShadow:
+              "0 8px 32px rgba(0, 0, 0, 0.3), inset 0 2px 0 rgba(255,255,255,0.1)",
           }}
         >
           <Typography
