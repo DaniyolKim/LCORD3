@@ -1,8 +1,94 @@
-import React, { useState } from "react";
-import { Box, Typography } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Typography, keyframes } from "@mui/material";
 import { usePlayersStore } from "../stores/playersStore";
 import SimplePlayerDetail from "./SimplePlayerDetail";
 import RaceIcon from "./RaceIcon";
+
+// 승리 애니메이션 키프레임 정의
+const victoryPulse = keyframes`
+  0% {
+    transform: translateX(0) translateY(0);
+    filter: brightness(1) drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+  }
+  10% {
+    transform: translateX(-2px) translateY(-1px);
+    filter: brightness(1.8) drop-shadow(0 0 25px rgba(255, 215, 0, 0.9)) drop-shadow(0 0 40px rgba(255, 255, 255, 0.3));
+  }
+  20% {
+    transform: translateX(2px) translateY(1px);
+    filter: brightness(1.5) drop-shadow(0 0 30px rgba(255, 215, 0, 1)) drop-shadow(0 0 50px rgba(255, 255, 255, 0.4));
+  }
+  30% {
+    transform: translateX(-1px) translateY(-2px);
+    filter: brightness(2) drop-shadow(0 0 35px rgba(255, 215, 0, 1)) drop-shadow(0 0 60px rgba(255, 255, 255, 0.5));
+  }
+  40% {
+    transform: translateX(1px) translateY(2px);
+    filter: brightness(1.6) drop-shadow(0 0 25px rgba(255, 215, 0, 0.8)) drop-shadow(0 0 45px rgba(255, 255, 255, 0.3));
+  }
+  50% {
+    transform: translateX(-2px) translateY(0);
+    filter: brightness(1.9) drop-shadow(0 0 40px rgba(255, 215, 0, 1)) drop-shadow(0 0 70px rgba(255, 255, 255, 0.6));
+  }
+  60% {
+    transform: translateX(2px) translateY(-1px);
+    filter: brightness(1.4) drop-shadow(0 0 20px rgba(255, 215, 0, 0.7)) drop-shadow(0 0 35px rgba(255, 255, 255, 0.2));
+  }
+  70% {
+    transform: translateX(-1px) translateY(1px);
+    filter: brightness(1.7) drop-shadow(0 0 30px rgba(255, 215, 0, 0.9)) drop-shadow(0 0 50px rgba(255, 255, 255, 0.4));
+  }
+  80% {
+    transform: translateX(1px) translateY(-2px);
+    filter: brightness(1.3) drop-shadow(0 0 15px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 25px rgba(255, 255, 255, 0.2));
+  }
+  90% {
+    transform: translateX(-1px) translateY(0);
+    filter: brightness(1.1) drop-shadow(0 0 12px rgba(255, 215, 0, 0.5));
+  }
+  100% {
+    transform: translateX(0) translateY(0);
+    filter: brightness(1) drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+  }
+`;
+
+const sparkleAnimation = keyframes`
+  0% {
+    transform: rotate(0deg) scale(0);
+    opacity: 0;
+  }
+  25% {
+    transform: rotate(90deg) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: rotate(180deg) scale(1.2);
+    opacity: 0.8;
+  }
+  75% {
+    transform: rotate(270deg) scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: rotate(360deg) scale(0);
+    opacity: 0;
+  }
+`;
+
+const borderGlow = keyframes`
+  0% {
+    border-color: rgba(255, 215, 0, 0.3);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  }
+  50% {
+    border-color: rgba(255, 215, 0, 1);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.8), 0 0 50px rgba(255, 215, 0, 0.5);
+  }
+  100% {
+    border-color: rgba(255, 215, 0, 0.3);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  }
+`;
 
 // 종족별 GIF 배경 가져오기
 const getRaceBackground = (race) => {
@@ -19,9 +105,24 @@ const getRaceBackground = (race) => {
   }
 };
 
-const PlayerBox = ({ playerId, playerName }) => {
+const PlayerBox = ({ playerId, playerName, isWinner = false }) => {
   const [showDetail, setShowDetail] = useState(false);
+  const [showVictoryEffect, setShowVictoryEffect] = useState(false);
   const { getPlayerById, getPlayerByName } = usePlayersStore();
+
+  // 승리 상태가 변경될 때 애니메이션 트리거
+  useEffect(() => {
+    if (isWinner) {
+      setShowVictoryEffect(true);
+      // 5초 후 애니메이션 효과 제거
+      const timer = setTimeout(() => {
+        setShowVictoryEffect(false);
+      }, 5000);
+      return () => clearTimeout(timer);
+    } else {
+      setShowVictoryEffect(false);
+    }
+  }, [isWinner]);
 
   // playerId 또는 playerName으로 선수 정보 찾기
   const player = playerId
@@ -60,8 +161,40 @@ const PlayerBox = ({ playerId, playerName }) => {
         perspective: "1000px",
         width: 450,
         height: 600,
+        animation: showVictoryEffect ? `${victoryPulse} 1.2s ease-in-out infinite` : 'none',
+        transition: 'all 0.3s ease-in-out',
       }}
     >
+      {/* 승리 스파클 이펙트 */}
+      {showVictoryEffect && (
+        <>
+          {[...Array(8)].map((_, index) => (
+            <Box
+              key={index}
+              sx={{
+                position: 'absolute',
+                top: '10%',
+                left: '10%',
+                right: '10%',
+                bottom: '10%',
+                pointerEvents: 'none',
+                zIndex: 10,
+                '&::before': {
+                  content: '"✨"',
+                  position: 'absolute',
+                  fontSize: '2rem',
+                  color: '#FFD700',
+                  top: `${Math.random() * 80}%`,
+                  left: `${Math.random() * 80}%`,
+                  animation: `${sparkleAnimation} 3s ease-in-out infinite`,
+                  animationDelay: `${index * 0.3}s`,
+                }
+              }}
+            />
+          ))}
+        </>
+      )}
+
       {/* 카드 컨테이너 */}
       <Box
         sx={{
@@ -83,7 +216,7 @@ const PlayerBox = ({ playerId, playerName }) => {
             backfaceVisibility: "hidden",
             textAlign: "center",
             color: "white",
-            backgroundColor: "rgba(0, 0, 0, 0.3)",
+            backgroundColor: showVictoryEffect ? "rgba(255, 215, 0, 0.1)" : "rgba(0, 0, 0, 0.3)",
             backgroundImage: `url(${getRaceBackground(player.종족)})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
@@ -91,14 +224,17 @@ const PlayerBox = ({ playerId, playerName }) => {
             padding: 3,
             borderRadius: 2,
             backdropFilter: "blur(5px)",
-            border: "1px solid rgba(255, 255, 255, 0.2)",
+            border: showVictoryEffect 
+              ? "2px solid rgba(255, 215, 0, 0.8)" 
+              : "1px solid rgba(255, 255, 255, 0.2)",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
             cursor: "pointer",
+            animation: showVictoryEffect ? `${borderGlow} 2s ease-in-out infinite` : 'none',
             "&:hover": {
-              backgroundColor: "rgba(0, 0, 0, 0.5)",
+              backgroundColor: showVictoryEffect ? "rgba(255, 215, 0, 0.2)" : "rgba(0, 0, 0, 0.5)",
             },
             "&::before": {
               content: '""',
@@ -107,7 +243,7 @@ const PlayerBox = ({ playerId, playerName }) => {
               left: 0,
               right: 0,
               bottom: 0,
-              backgroundColor: "rgba(0, 0, 0, 0.4)",
+              backgroundColor: showVictoryEffect ? "rgba(255, 215, 0, 0.15)" : "rgba(0, 0, 0, 0.4)",
               borderRadius: 2,
               zIndex: 1,
             },
@@ -129,6 +265,11 @@ const PlayerBox = ({ playerId, playerName }) => {
                 fontWeight: "bold",
                 position: "relative",
                 zIndex: 2,
+                color: showVictoryEffect ? "#FFD700" : "white",
+                textShadow: showVictoryEffect 
+                  ? "0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.6)" 
+                  : "none",
+                transition: "all 0.3s ease-in-out",
               }}
             >
               {player.이름}
@@ -141,10 +282,24 @@ const PlayerBox = ({ playerId, playerName }) => {
                 position: "relative",
                 zIndex: 2,
                 fontSize: "1.5em",
+                filter: showVictoryEffect 
+                  ? "drop-shadow(0 0 10px rgba(255, 215, 0, 0.8))" 
+                  : "none",
+                transition: "all 0.3s ease-in-out",
               }}
             />
           </Box>
-          <Typography variant="h3" sx={{ opacity: 0.8 }}>
+          <Typography 
+            variant="h3" 
+            sx={{ 
+              opacity: 0.8,
+              color: showVictoryEffect ? "#FFD700" : "white",
+              textShadow: showVictoryEffect 
+                ? "0 0 8px rgba(255, 215, 0, 0.6)" 
+                : "none",
+              transition: "all 0.3s ease-in-out",
+            }}
+          >
             ({player.id})
           </Typography>
         </Box>

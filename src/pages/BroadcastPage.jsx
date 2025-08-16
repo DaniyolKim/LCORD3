@@ -5,8 +5,13 @@ import useBroadcastStore from "../stores/broadcastStore";
 
 function BroadcastPage() {
   const videoRef = useRef(null);
-  const { homeTeam, awayTeam, getCurrentPlayers } = useBroadcastStore();
+  const { homeTeam, awayTeam, getCurrentPlayers, matchResults, currentRound } = useBroadcastStore();
   const { homePlayer, awayPlayer } = getCurrentPlayers();
+
+  // 현재 라운드의 승리자 확인
+  const currentRoundResult = matchResults.find(result => result.round === currentRound - 1);
+  const isHomePlayerWinner = currentRoundResult?.winner === "home";
+  const isAwayPlayerWinner = currentRoundResult?.winner === "away";
 
   useEffect(() => {
     const video = videoRef.current;
@@ -186,8 +191,14 @@ function BroadcastPage() {
           marginTop: 18,
         }}
       >
-        <PlayerBox playerName={homePlayer || "홈 플레이어"} />
-        <PlayerBox playerName={awayPlayer || "어웨이 플레이어"} />
+        <PlayerBox 
+          playerName={homePlayer || "홈 플레이어"} 
+          isWinner={isHomePlayerWinner}
+        />
+        <PlayerBox 
+          playerName={awayPlayer || "어웨이 플레이어"} 
+          isWinner={isAwayPlayerWinner}
+        />
       </Box>
     </Box>
   );
