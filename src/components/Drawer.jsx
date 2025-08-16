@@ -19,6 +19,8 @@ import {
   Paper,
   Checkbox,
   Divider,
+  Switch,
+  FormControlLabel,
 } from "@mui/material";
 import { Tv, Users, RotateCcw } from "lucide-react";
 import useBroadcastStore from "../stores/broadcastStore";
@@ -35,6 +37,8 @@ function Drawer() {
     updateRoundWinner,
     resetGame,
     matchResults,
+    isOnGame,
+    setIsOnGame,
   } = useBroadcastStore();
 
   const menuItems = [
@@ -73,12 +77,9 @@ function Drawer() {
       <Box sx={{ p: 3, borderBottom: "1px solid rgba(255, 255, 255, 0.1)" }}>
         <Typography
           variant="h5"
-          sx={{ fontWeight: "bold", color: "#f1f5f9", mb: 1 }}
+          sx={{ fontWeight: "bold", color: "#f1f5f9" }}
         >
           LG크래프트
-        </Typography>
-        <Typography variant="body2" sx={{ color: "#94a3b8" }}>
-          멸망전 방송 & 기록 열람
         </Typography>
       </Box>
 
@@ -161,15 +162,48 @@ function Drawer() {
                 sx={{
                   color: "#f87171",
                   borderColor: "#f87171",
-                  "&:hover": {
-                    backgroundColor: "rgba(248, 113, 113, 0.1)",
-                    borderColor: "#f87171",
-                  },
+                  "&:hover": { borderColor: "#fca5a5" },
                 }}
                 variant="outlined"
               >
                 리셋
               </Button>
+            </Box>
+
+            {/* 게임 상태 스위치 */}
+            <Box sx={{ mb: 3 }}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={isOnGame}
+                    onChange={(e) => setIsOnGame(e.target.checked)}
+                    sx={{
+                      '& .MuiSwitch-switchBase.Mui-checked': {
+                        color: '#22c55e',
+                      },
+                      '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                        backgroundColor: '#22c55e',
+                      },
+                    }}
+                  />
+                }
+                label={
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Box
+                      sx={{
+                        width: 8,
+                        height: 8,
+                        borderRadius: '50%',
+                        backgroundColor: isOnGame ? '#22c55e' : '#6b7280',
+                      }}
+                    />
+                    <Typography sx={{ color: '#f1f5f9' }}>
+                      {isOnGame ? '게임 중' : '게임 대기 중'}
+                    </Typography>
+                  </Box>
+                }
+                sx={{ color: '#f1f5f9' }}
+              />
             </Box>
 
             {/* 팀 설정 */}

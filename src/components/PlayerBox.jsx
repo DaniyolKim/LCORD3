@@ -52,29 +52,6 @@ const victoryPulse = keyframes`
   }
 `;
 
-const sparkleAnimation = keyframes`
-  0% {
-    transform: rotate(0deg) scale(0);
-    opacity: 0;
-  }
-  25% {
-    transform: rotate(90deg) scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: rotate(180deg) scale(1.2);
-    opacity: 0.8;
-  }
-  75% {
-    transform: rotate(270deg) scale(1);
-    opacity: 0.6;
-  }
-  100% {
-    transform: rotate(360deg) scale(0);
-    opacity: 0;
-  }
-`;
-
 const borderGlow = keyframes`
   0% {
     border-color: rgba(255, 215, 0, 0.3);
@@ -165,35 +142,7 @@ const PlayerBox = ({ playerId, playerName, isWinner = false }) => {
         transition: 'all 0.3s ease-in-out',
       }}
     >
-      {/* 승리 스파클 이펙트 */}
-      {showVictoryEffect && (
-        <>
-          {[...Array(8)].map((_, index) => (
-            <Box
-              key={index}
-              sx={{
-                position: 'absolute',
-                top: '10%',
-                left: '10%',
-                right: '10%',
-                bottom: '10%',
-                pointerEvents: 'none',
-                zIndex: 10,
-                '&::before': {
-                  content: '"✨"',
-                  position: 'absolute',
-                  fontSize: '2rem',
-                  color: '#FFD700',
-                  top: `${Math.random() * 80}%`,
-                  left: `${Math.random() * 80}%`,
-                  animation: `${sparkleAnimation} 3s ease-in-out infinite`,
-                  animationDelay: `${index * 0.3}s`,
-                }
-              }}
-            />
-          ))}
-        </>
-      )}
+  {/* 승리 스파클 이펙트 제거됨 */}
 
       {/* 카드 컨테이너 */}
       <Box

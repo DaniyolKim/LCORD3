@@ -5,7 +5,7 @@ import useBroadcastStore from "../stores/broadcastStore";
 
 function BroadcastPage() {
   const videoRef = useRef(null);
-  const { homeTeam, awayTeam, getCurrentPlayers, matchResults, currentRound } = useBroadcastStore();
+  const { homeTeam, awayTeam, getCurrentPlayers, matchResults, currentRound, isOnGame } = useBroadcastStore();
   const { homePlayer, awayPlayer } = getCurrentPlayers();
 
   // 현재 라운드의 승리자 확인
@@ -32,27 +32,31 @@ function BroadcastPage() {
         justifyContent: "center",
         aspectRatio: "16/9",
         overflow: "hidden",
+        backgroundColor: isOnGame ? "green" : "transparent", // 게임 중일 때 녹색 배경
       }}
     >
-      {/* 배경 비디오 */}
-      <video
-        ref={videoRef}
-        autoPlay
-        muted
-        loop
-        playsInline
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          zIndex: 0,
-        }}
-      >
-        <source src="/versus.mp4" type="video/mp4" />
-      </video>
+      {/* 게임 대기 중일 때만 모든 컨텐츠 표시 */}
+      {!isOnGame && (
+        <>
+          {/* 배경 비디오 */}
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            loop
+            playsInline
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              zIndex: 0,
+            }}
+          >
+            <source src="/versus.mp4" type="video/mp4" />
+          </video>
 
       {/* 팀 정보 - 상단 가운데 */}
       <Box
@@ -200,6 +204,8 @@ function BroadcastPage() {
           isWinner={isAwayPlayerWinner}
         />
       </Box>
+        </>
+      )}
     </Box>
   );
 }

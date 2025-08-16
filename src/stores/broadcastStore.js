@@ -23,6 +23,7 @@ const useBroadcastStore = create(
       // 현재 경기 상태
       currentRound: 1,
       matchResults: [], // 각 경기 결과를 저장
+      isOnGame: false, // 게임 진행 상태 (false: 게임 대기 중, true: 게임 중)
 
       // 홈팀 정보 업데이트
       setHomeTeam: (teamData) =>
@@ -181,7 +182,14 @@ const useBroadcastStore = create(
           },
           currentRound: 1,
           matchResults: [],
+          isOnGame: false,
         }),
+
+      // 게임 상태 변경
+      setIsOnGame: (isOnGame) =>
+        set(() => ({
+          isOnGame,
+        })),
 
       // 현재 플레이어 정보 가져오기
       getCurrentPlayers: () => {
