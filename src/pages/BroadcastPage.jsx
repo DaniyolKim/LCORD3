@@ -2,6 +2,8 @@ import { Box, Typography } from "@mui/material";
 import { useRef, useEffect } from "react";
 import PlayerBox from "../components/PlayerBox";
 import useBroadcastStore from "../stores/broadcastStore";
+import scoreboard_mini from "../assets/scoreboard_mini.png";
+import { getPlayerByName } from "../stores/playersStore";
 
 function BroadcastPage() {
   const videoRef = useRef(null);
@@ -12,6 +14,8 @@ function BroadcastPage() {
     matchResults,
     currentRound,
     isOnGame,
+    matchTitle,
+    setMatchTitle,
   } = useBroadcastStore();
   const { homePlayer, awayPlayer } = getCurrentPlayers();
 
@@ -30,6 +34,11 @@ function BroadcastPage() {
       });
     }
   }, []);
+
+  const homePlayerInfo = getPlayerByName(homePlayer);
+  const homePlayerRace = homePlayerInfo?.종족;
+  const awayPlayerInfo = getPlayerByName(awayPlayer);
+  const awayPlayerRace = awayPlayerInfo?.종족;
 
   return (
     <Box
@@ -152,7 +161,6 @@ function BroadcastPage() {
                         borderRadius: 1,
                         backgroundColor:
                           result.winner === "home" ? "#22c55e" : "#ef4444",
-                        border: "2px solid #fff",
                         boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
                         transition: "background 0.3s",
                       }}
@@ -240,7 +248,6 @@ function BroadcastPage() {
                         borderRadius: 1,
                         backgroundColor:
                           result.winner === "away" ? "#22c55e" : "#ef4444",
-                        border: "2px solid #fff",
                         boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
                         transition: "background 0.3s",
                       }}
@@ -286,6 +293,95 @@ function BroadcastPage() {
             />
           </Box>
         </>
+      )}
+      {isOnGame && (
+        <Box
+          sx={{
+            position: "absolute",
+            left: 0,
+            top: 524,
+            width: 258,
+            zIndex: 10,
+          }}
+        >
+          <img
+            src={scoreboard_mini}
+            alt="Scoreboard Mini"
+            style={{ width: "100%", display: "block" }}
+          />
+          <input
+            type="text"
+            value={matchTitle}
+            onChange={(e) => setMatchTitle(e.target.value)}
+            placeholder="match title"
+            style={{
+              position: "absolute",
+              top: 4,
+              left: "50%",
+              transform: "translateX(-50%)",
+              width: "100%",
+              fontSize: "1rem",
+              background: "transparent",
+              zIndex: 20,
+              border: "none",
+              textAlign: "center",
+            }}
+          />
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            sx={{
+              position: "absolute",
+              top: 30,
+              left: "50%",
+              transform: "translateX(-50%)",
+              width: "80%",
+              textAlign: "center",
+              zIndex: 21,
+              color: "white",
+              fontWeight: "bold",
+              fontSize: "1.1rem",
+            }}
+          >
+            <Typography sx={{ fontWeight: "bold" }}>{homePlayer}</Typography>
+            <Box
+              sx={{
+                backgroundColor: "#c49820ff",
+                pl: 1,
+                pr: 1,
+                borderRadius: 2,
+              }}
+            >
+              <Typography variant="h7" sx={{ fontWeight: "bold" }}>
+                {homeTeam.score} : {awayTeam.score}
+              </Typography>
+            </Box>
+            <Typography sx={{ fontWeight: "bold" }}>{awayPlayer}</Typography>
+          </Box>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            sx={{
+              position: "absolute",
+              top: 60,
+              left: "50%",
+              transform: "translateX(-50%)",
+              width: "80%",
+              textAlign: "center",
+              zIndex: 21,
+              color: "white",
+              fontWeight: "bold",
+              fontSize: "1.1rem",
+            }}
+          >
+            <Typography sx={{ fontWeight: "bold" }}>
+              {homePlayerRace}
+            </Typography>
+            <Typography sx={{ fontWeight: "bold" }}>
+              {awayPlayerRace}
+            </Typography>
+          </Box>
+        </Box>
       )}
     </Box>
   );

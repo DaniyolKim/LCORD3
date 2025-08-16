@@ -20,10 +20,12 @@ const useBroadcastStore = create(
         currentPlayerIndex: 0,
       },
 
-      // 현재 경기 상태
-      currentRound: 1,
-      matchResults: [], // 각 경기 결과를 저장
-      isOnGame: false, // 게임 진행 상태 (false: 게임 대기 중, true: 게임 중)
+  // 현재 경기 상태
+  currentRound: 1,
+  matchResults: [], // 각 경기 결과를 저장
+  isOnGame: false, // 게임 진행 상태 (false: 게임 대기 중, true: 게임 중)
+  matchTitle: "", // 매치 타이틀
+  setMatchTitle: (title) => set({ matchTitle: title }),
 
       // 홈팀 정보 업데이트
       setHomeTeam: (teamData) =>
