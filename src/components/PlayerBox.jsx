@@ -14,9 +14,8 @@ const getRaceBackground = (race) => {
     case "Z":
       return "/zerg.gif";
     case "R":
-      return "/protoss.gif"; // R은 랜덤이므로 기본값으로 프로토스 사용
     default:
-      return null;
+      return "/random.gif";
   }
 };
 
@@ -119,27 +118,35 @@ const PlayerBox = ({ playerId, playerName }) => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              mb: 2,
               position: "relative",
               zIndex: 2,
+              gap: 2,
             }}
           >
-            <RaceIcon race={player.종족} sx={{ mr: 1 }} />
             <Typography
-              variant="h6"
+              variant="h2"
               sx={{
                 fontWeight: "bold",
                 position: "relative",
                 zIndex: 2,
-                mr: 1
               }}
             >
               {player.이름}
             </Typography>
-            <Typography variant="body2" sx={{ opacity: 0.8 }}>
-              ({player.id})
-            </Typography>
+            <RaceIcon 
+              race={player.종족} 
+              useEm={true} 
+              size={32}
+              sx={{
+                position: "relative",
+                zIndex: 2,
+                fontSize: "1.5em",
+              }}
+            />
           </Box>
+          <Typography variant="h3" sx={{ opacity: 0.8 }}>
+            ({player.id})
+          </Typography>
         </Box>
 
         {/* 뒤면 - 상세 정보 */}
@@ -153,7 +160,7 @@ const PlayerBox = ({ playerId, playerName }) => {
             overflow: "hidden",
           }}
         >
-          <SimplePlayerDetail 
+          <SimplePlayerDetail
             player={player}
             onClose={() => setShowDetail(false)}
           />

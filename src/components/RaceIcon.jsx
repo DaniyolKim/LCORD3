@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/material';
 
-const RaceIcon = ({ race, size = 24, sx = {} }) => {
+const RaceIcon = ({ race, size = 24, useEm = false, sx = {} }) => {
   const getRaceStyle = (race) => {
     switch (race) {
       case 'P': 
@@ -32,12 +32,16 @@ const RaceIcon = ({ race, size = 24, sx = {} }) => {
         return { 
           backgroundColor: '#CCCCCC', 
           color: 'black', 
-          symbol: '?' 
+          symbol: race 
         };
     }
   };
 
   const style = getRaceStyle(race);
+  
+  // useEm이 true면 em 단위를 사용해서 상위 컴포넌트의 font size에 맞춰 크기 조정
+  const iconSize = useEm ? `${size / 16}em` : size;
+  const iconFontSize = useEm ? '0.5em' : `${size * 0.5}px`;
   
   return (
     <Box
@@ -45,12 +49,12 @@ const RaceIcon = ({ race, size = 24, sx = {} }) => {
         display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
-        width: size,
-        height: size,
+        width: iconSize,
+        height: iconSize,
         borderRadius: '50%',
         backgroundColor: style.backgroundColor,
         color: style.color,
-        fontSize: `${size * 0.5}px`,
+        fontSize: iconFontSize,
         fontWeight: 'bold',
         flexShrink: 0,
         ...sx
