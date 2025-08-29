@@ -108,7 +108,7 @@ function BroadcastPage() {
                 component="img"
                 src={
                   new URL(
-                    `../assets/team_logo/${homeTeam.name.split(" ")[0]}.jpg`,
+                    `../assets/${homeTeam.name.split(" ")[0]}.jpg`,
                     import.meta.url
                   ).href
                 }
@@ -267,7 +267,7 @@ function BroadcastPage() {
                 component="img"
                 src={
                   new URL(
-                    `../assets/team_logo/${awayTeam.name.split(" ")[0]}.jpg`,
+                    `../assets/${awayTeam.name.split(" ")[0]}.jpg`,
                     import.meta.url
                   ).href
                 }
