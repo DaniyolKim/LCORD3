@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Box, CircularProgress, Typography, Button, Alert } from '@mui/material'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
@@ -7,6 +7,7 @@ import { useGameDataStore } from './stores/playersStore'
 import Drawer from './components/Drawer'
 import BroadcastPage from './pages/BroadcastPage'
 import PlayerAnalyzePage from './pages/PlayerAnalyzePage'
+const BASE_URL = import.meta.env.BASE_URL
 
 const theme = createTheme({
   palette: {
@@ -103,7 +104,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Router>
+      <BrowserRouter basename={BASE_URL}>
         <Box sx={{ display: 'flex', width: '100vw', height: '100vh' }}>
           <Box
             sx={{
@@ -121,7 +122,7 @@ function App() {
           </Box>
           <Drawer />
         </Box>
-      </Router>
+      </BrowserRouter>
     </ThemeProvider>
   )
 }
