@@ -4,6 +4,7 @@ import PlayerBox from "../components/PlayerBox";
 import useBroadcastStore from "../stores/broadcastStore";
 import scoreboard_mini from "../assets/scoreboard_mini.png";
 import { getPlayerByName } from "../stores/playersStore";
+import versus from "../assets/versus.mp4";
 
 function BroadcastPage() {
   const videoRef = useRef(null);
@@ -73,7 +74,7 @@ function BroadcastPage() {
               zIndex: 0,
             }}
           >
-            <source src="/versus.mp4" type="video/mp4" />
+            <source src={versus} type="video/mp4" />
           </video>
 
           {/* 팀 정보 - 상단 가운데 */}
@@ -105,7 +106,12 @@ function BroadcastPage() {
               {/* 홈팀 로고 */}
               <Box
                 component="img"
-                src={`/team_logo/${homeTeam.name.split(" ")[0]}.jpg`}
+                src={
+                  new URL(
+                    `../assets/team_logo/${homeTeam.name.split(" ")[0]}.jpg`,
+                    import.meta.url
+                  ).href
+                }
                 alt={`${homeTeam.name} 로고`}
                 sx={{
                   width: 80,
@@ -259,7 +265,12 @@ function BroadcastPage() {
               {/* 어웨이팀 로고 */}
               <Box
                 component="img"
-                src={`/team_logo/${awayTeam.name.split(" ")[0]}.jpg`}
+                src={
+                  new URL(
+                    `../assets/team_logo/${awayTeam.name.split(" ")[0]}.jpg`,
+                    import.meta.url
+                  ).href
+                }
                 alt={`${awayTeam.name} 로고`}
                 sx={{
                   width: 80,

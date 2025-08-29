@@ -3,6 +3,10 @@ import { Box, Typography, keyframes } from "@mui/material";
 import { usePlayersStore } from "../stores/playersStore";
 import SimplePlayerDetail from "./SimplePlayerDetail";
 import RaceIcon from "./RaceIcon";
+import protoss from "../assets/protoss.gif";
+import zerg from "../assets/zerg.gif";
+import terran from "../assets/terran.gif";
+import random from "../assets/random.gif";
 
 // 승리 애니메이션 키프레임 정의
 const victoryPulse = keyframes`
@@ -71,14 +75,14 @@ const borderGlow = keyframes`
 const getRaceBackground = (race) => {
   switch (race) {
     case "P":
-      return "/protoss.gif";
+      return protoss;
     case "T":
-      return "/terran.gif";
+      return terran;
     case "Z":
-      return "/zerg.gif";
+      return zerg;
     case "R":
     default:
-      return "/random.gif";
+      return random;
   }
 };
 
