@@ -22,7 +22,6 @@ import {
   Switch,
   FormControlLabel,
 } from "@mui/material";
-import { Tv, Users, RotateCcw } from "lucide-react";
 import useBroadcastStore from "../stores/broadcastStore";
 
 function Drawer() {
@@ -44,13 +43,11 @@ function Drawer() {
   const menuItems = [
     {
       path: "/",
-      icon: Tv,
       label: "방송화면",
       description: "라이브 방송 관리",
     },
     {
       path: "/playeranalyze",
-      icon: Users,
       label: "선수 분석",
       description: "선수별 상세 통계",
     },
@@ -157,7 +154,6 @@ function Drawer() {
               </Typography>
               <Button
                 size="small"
-                startIcon={<RotateCcw size={16} />}
                 onClick={resetGame}
                 sx={{
                   color: "#f87171",
