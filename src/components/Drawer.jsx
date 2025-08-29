@@ -22,9 +22,11 @@ import {
   Switch,
   FormControlLabel,
 } from "@mui/material";
+import LiveTvIcon from "@mui/icons-material/LiveTv";
+import BarChartIcon from "@mui/icons-material/BarChart";
 import useBroadcastStore from "../stores/broadcastStore";
 
-function Drawer() {
+const Drawer = () => {
   const location = useLocation();
   const {
     homeTeam,
@@ -45,11 +47,13 @@ function Drawer() {
       path: "/",
       label: "방송화면",
       description: "라이브 방송 관리",
+      icon: LiveTvIcon,
     },
     {
       path: "/playeranalyze",
       label: "선수 분석",
       description: "선수별 상세 통계",
+      icon: BarChartIcon,
     },
   ];
 
@@ -108,7 +112,7 @@ function Drawer() {
                 }}
               >
                 <ListItemIcon sx={{ color: "inherit", minWidth: 40 }}>
-                  <Icon size={20} />
+                  <Icon fontSize="small" />
                 </ListItemIcon>
                 <ListItemText
                   primary={

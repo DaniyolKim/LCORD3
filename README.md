@@ -16,7 +16,6 @@
 - **Vite** - 빠른 개발 서버와 빌드 도구
 - **Recharts** - 데이터 시각화 라이브러리
 - **PapaParse** - CSV 파일 파싱
-- **Lucide React** - 아이콘 라이브러리
 
 ## 시작하기
 
